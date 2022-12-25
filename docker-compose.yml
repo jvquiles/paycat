@@ -1,0 +1,41 @@
+version: '3.4'
+
+services:
+  paycat.api:
+    image: ${DOCKER_REGISTRY-}paycatapi
+    build:
+      context: .
+      dockerfile: src/Paycat.Api/Dockerfile
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - 5000:80
+      - 5001:443
+    networks:
+      - back
+    depends_on:
+      - rabbitmq
+
+  paycat.processor:
+    image: ${DOCKER_REGISTRY-}paycatprocessor
+    build:
+      context: .
+      dockerfile: src/Paycat.Processor/Dockerfile
+    environment:
+      - ENVIRONMENT=Development
+    networks:
+      - back
+    depends_on:
+      - rabbitmq
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - 15672:15672
+      - 5672:5672
+    networks:
+      - back
+
+networks:
+  back:
+    driver: bridge

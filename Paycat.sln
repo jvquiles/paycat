@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33103.184
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FC228E68-918B-4F12-A081-CB9A8EEFD023}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Paycat.Api", "src\Paycat.Api\Paycat.Api.csproj", "{3A426E78-06CD-499B-90AF-6B02C3265040}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CDB246AA-9441-4F5B-95B1-664BA5FA70E3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Paycat.Messages", "src\Paycat.Messages\Paycat.Messages.csproj", "{1668F6F5-26BF-4065-A4DA-FE0160D4B722}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Paycat.Processor", "src\Paycat.Processor\Paycat.Processor.csproj", "{262E4671-4D86-4905-8F84-40A8BD94BF6E}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{C6A4F9BA-C1E3-41B4-A4FB-FE58B4C40E2E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paycat.Infrastructure", "src\Paycat.Infrastructure\Paycat.Infrastructure.csproj", "{AD511DC7-B4D4-4980-93FE-A9EE8141E22E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3A426E78-06CD-499B-90AF-6B02C3265040}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A426E78-06CD-499B-90AF-6B02C3265040}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A426E78-06CD-499B-90AF-6B02C3265040}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A426E78-06CD-499B-90AF-6B02C3265040}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1668F6F5-26BF-4065-A4DA-FE0160D4B722}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1668F6F5-26BF-4065-A4DA-FE0160D4B722}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1668F6F5-26BF-4065-A4DA-FE0160D4B722}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1668F6F5-26BF-4065-A4DA-FE0160D4B722}.Release|Any CPU.Build.0 = Release|Any CPU
+		{262E4671-4D86-4905-8F84-40A8BD94BF6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{262E4671-4D86-4905-8F84-40A8BD94BF6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{262E4671-4D86-4905-8F84-40A8BD94BF6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{262E4671-4D86-4905-8F84-40A8BD94BF6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6A4F9BA-C1E3-41B4-A4FB-FE58B4C40E2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6A4F9BA-C1E3-41B4-A4FB-FE58B4C40E2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6A4F9BA-C1E3-41B4-A4FB-FE58B4C40E2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6A4F9BA-C1E3-41B4-A4FB-FE58B4C40E2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD511DC7-B4D4-4980-93FE-A9EE8141E22E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD511DC7-B4D4-4980-93FE-A9EE8141E22E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD511DC7-B4D4-4980-93FE-A9EE8141E22E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD511DC7-B4D4-4980-93FE-A9EE8141E22E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3A426E78-06CD-499B-90AF-6B02C3265040} = {CDB246AA-9441-4F5B-95B1-664BA5FA70E3}
+		{1668F6F5-26BF-4065-A4DA-FE0160D4B722} = {CDB246AA-9441-4F5B-95B1-664BA5FA70E3}
+		{262E4671-4D86-4905-8F84-40A8BD94BF6E} = {CDB246AA-9441-4F5B-95B1-664BA5FA70E3}
+		{AD511DC7-B4D4-4980-93FE-A9EE8141E22E} = {CDB246AA-9441-4F5B-95B1-664BA5FA70E3}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FE8B5DDA-9B46-40B6-8307-BB8D7643EA2A}
+	EndGlobalSection
+EndGlobal
