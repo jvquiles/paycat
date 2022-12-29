@@ -6,7 +6,8 @@
       "serviceActions": {
         "paycat.api": "StartDebugging",
         "paycat.processor": "StartDebugging",
-        "rabbitmq": "StartWithoutDebugging"
+        "rabbitmq": "StartWithoutDebugging",
+        "redis": "StartWithoutDebugging"
       }
     }
   }

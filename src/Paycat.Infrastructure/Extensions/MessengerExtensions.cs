@@ -7,7 +7,7 @@ public class MessengerBuilder
 {
     public IServiceCollection ServiceCollection { get; }
 
-    public Type? MessengerImplementationType { get; set; }
+    public Type MessengerImplementationType { get; set; }
 
     public MessengerBuilder(IServiceCollection serviceCollection)
     {

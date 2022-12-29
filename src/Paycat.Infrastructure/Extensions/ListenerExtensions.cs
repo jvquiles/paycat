@@ -7,7 +7,7 @@ public class ListenerBuilder
 {
     public IServiceCollection ServiceCollection { get; }
 
-    public Type? ListenerImplementationType { get; set; }
+    public Type ListenerImplementationType { get; set; }
 
     public ListenerBuilder(IServiceCollection serviceCollection)
     {

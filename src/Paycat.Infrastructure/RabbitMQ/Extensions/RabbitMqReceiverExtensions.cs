@@ -1,6 +1,4 @@
-﻿using Autofac.Core;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Paycat.Infrastructure.Extensions;
 
 namespace Paycat.Infrastructure.RabbitMQ.Extensions;
@@ -9,7 +7,7 @@ public static class RabbitMqReceiverExtensions
 {
     public class RabbitMqReceiverBuilder
     {
-        public RabbitMqOptions? Options { get; set; }
+        public RabbitMqOptions Options { get; set; }
     }
 
     public static ReceiverBuilder AddRabbitMq(this ReceiverBuilder receiverBuilder, Action<RabbitMqReceiverBuilder> configure)

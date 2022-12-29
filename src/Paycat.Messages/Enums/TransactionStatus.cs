@@ -3,6 +3,5 @@
 public enum TransactionStatus
 {
     New,
-    Processing,
     Paid
 }

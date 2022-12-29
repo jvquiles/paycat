@@ -7,7 +7,7 @@ public class ReceiverBuilder
 {
     public IServiceCollection ServiceCollection { get; }
 
-    public Type? ReceiverImplementationType { get; set; }
+    public Type ReceiverImplementationType { get; set; }
 
     public ReceiverBuilder(IServiceCollection serviceCollection)
     {

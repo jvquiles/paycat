@@ -36,6 +36,13 @@ services:
     networks:
       - back
 
+  redis:
+    image: redis:7.0.7-alpine
+    ports:
+      - 6379:6379
+    networks:
+      - back
+
 networks:
   back:
     driver: bridge

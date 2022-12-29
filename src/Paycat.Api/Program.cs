@@ -1,10 +1,11 @@
-using System.Reflection;
 using MediatR;
-using Microsoft.Extensions.Configuration;
 using Paycat.Api;
 using Paycat.Infrastructure.Extensions;
 using Paycat.Infrastructure.RabbitMQ;
 using Paycat.Infrastructure.RabbitMQ.Extensions;
+using Paycat.Infrastructure.Redis;
+using Paycat.Infrastructure.Redis.Extensions;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,13 @@ builder.Services.AddReceiver(receiverBuilder => receiverBuilder
         rabbitMqBuilder.Options = options;
     }));
 builder.Services.AddHostedService<Worker>();
+builder.Services.AddRepository(repositoryBuilder => repositoryBuilder
+    .AddRedisRepository(redisRepositoryBuilder =>
+    {
+        var options = builder.Configuration.GetSection(nameof(RedisRepositoryOptions))
+            .Get<RedisRepositoryOptions>();
+        redisRepositoryBuilder.Options = options;
+    }));
 
 var app = builder.Build();
 

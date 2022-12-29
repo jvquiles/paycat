@@ -2,9 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Paycat.Api.Data;
 using Paycat.Api.Models;
-using Paycat.Infrastructure;
 using Paycat.Messages;
-using Paycat.Messages.Enums;
 
 namespace Paycat.Api.Controllers
 {
@@ -25,13 +23,6 @@ namespace Paycat.Api.Controllers
         [HttpPut()]
         public async Task<IActionResult> Create([FromBody] CreateTransaction createTransaction)
         {
-            var transaction = new Transaction()
-            {
-                Id = createTransaction.Id,
-                Amount = createTransaction.Amount,
-                Status = TransactionStatus.New,
-                Date = DateTimeOffset.Now
-            };
             var createdTransaction = new CreatedTransaction()
             {
                 Id = createTransaction.Id
@@ -44,7 +35,7 @@ namespace Paycat.Api.Controllers
                 return BadRequest(processedTransaction.ErrorMessage);
             }
 
-            return Ok(transaction);
+            return Ok(processedTransaction);
         }
     }
 }
