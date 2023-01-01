@@ -5,7 +5,10 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
 
-      
+  paycat.backup.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
   paycat.processor:
     environment:
       - DOTNET_ENVIRONMENT=Development

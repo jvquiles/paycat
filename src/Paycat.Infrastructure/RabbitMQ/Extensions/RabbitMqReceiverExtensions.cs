@@ -7,7 +7,7 @@ public static class RabbitMqReceiverExtensions
 {
     public class RabbitMqReceiverBuilder
     {
-        public RabbitMqOptions Options { get; set; }
+        public RabbitMqReceiverOptions Options { get; set; }
     }
 
     public static ReceiverBuilder AddRabbitMq(this ReceiverBuilder receiverBuilder, Action<RabbitMqReceiverBuilder> configure)
@@ -20,7 +20,7 @@ public static class RabbitMqReceiverExtensions
             throw new ArgumentNullException(nameof(builder.Options));
         }
 
-        receiverBuilder.ServiceCollection.AddSingleton<RabbitMqOptions>(builder.Options);
+        receiverBuilder.ServiceCollection.AddSingleton<RabbitMqReceiverOptions>(builder.Options);
         receiverBuilder.ReceiverImplementationType = typeof(RabbitMqReceiver);
 
         return receiverBuilder;

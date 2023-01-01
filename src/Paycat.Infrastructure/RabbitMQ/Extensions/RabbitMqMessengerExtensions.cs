@@ -7,7 +7,7 @@ public static class RabbitMqMessengerExtensions
 {
     public class RabbitMqMessengerBuilder
     {
-        public RabbitMqOptions Options { get; set; }
+        public RabbitMqMessengerOptions Options { get; set; }
     }
 
     public static MessengerBuilder AddRabbitMq(this MessengerBuilder messengerBuilder, Action<RabbitMqMessengerBuilder> configure)
@@ -20,7 +20,7 @@ public static class RabbitMqMessengerExtensions
             throw new ArgumentNullException(nameof(builder.Options));
         }
 
-        messengerBuilder.ServiceCollection.AddSingleton<RabbitMqOptions>(builder.Options);
+        messengerBuilder.ServiceCollection.AddSingleton<RabbitMqMessengerOptions>(builder.Options);
         messengerBuilder.MessengerImplementationType = typeof(RabbitMqMessenger);
 
         return messengerBuilder;

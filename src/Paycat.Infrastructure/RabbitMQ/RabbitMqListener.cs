@@ -10,18 +10,20 @@ namespace Paycat.Infrastructure.RabbitMQ;
 public class RabbitMqListener : IListener
 {
     private readonly IMediator _mediator;
+    private readonly RabbitMqListenerOptions _rabbitMqListenerOptions;
     private readonly IConnection _connection;
     private readonly IModel _channel;
 
-    public RabbitMqListener(IMediator mediator, RabbitMqOptions rabbitMqOptions)
+    public RabbitMqListener(IMediator mediator, RabbitMqListenerOptions rabbitMqListenerOptions)
     {
         _mediator = mediator;
+        _rabbitMqListenerOptions = rabbitMqListenerOptions;
         var factory = new ConnectionFactory()
         {
-            HostName = rabbitMqOptions?.Host ?? "localhost",
-            Port = rabbitMqOptions?.Port ?? 5672,
-            UserName = rabbitMqOptions?.User ?? "guest",
-            Password = rabbitMqOptions?.Password ?? "guest",
+            HostName = rabbitMqListenerOptions?.Host ?? "localhost",
+            Port = rabbitMqListenerOptions?.Port ?? 5672,
+            UserName = rabbitMqListenerOptions?.User ?? "guest",
+            Password = rabbitMqListenerOptions?.Password ?? "guest",
         };
         _connection = factory.CreateConnection();
         _channel = _connection.CreateModel();
@@ -48,7 +50,8 @@ public class RabbitMqListener : IListener
 
     private void Listen(Type requestType, Type responseType, CancellationToken stoppingToken)
     {
-        _channel.QueueDeclare(queue: requestType.Name,
+        _channel.QueueDeclare(
+            queue: requestType.Name,
             durable: false,
             exclusive: false,
             autoDelete: false,
@@ -66,7 +69,9 @@ public class RabbitMqListener : IListener
             }
 
             using var outputChannel = _connection.CreateModel();
-            outputChannel.QueueDeclare(queue: responseType.Name,
+            var queueOutputName = $"{responseType.Name}_{Encoding.UTF8.GetString((byte[])args.BasicProperties.Headers["HOSTNAME"])}";
+            outputChannel.QueueDeclare(
+                queue: queueOutputName,
                 durable: false,
                 exclusive: false,
                 autoDelete: false,
@@ -82,13 +87,15 @@ public class RabbitMqListener : IListener
             basicProperties.CorrelationId = args.BasicProperties.CorrelationId;
             basicProperties.Persistent = false;
             basicProperties.Expiration = args.BasicProperties.Expiration;
-            outputChannel.BasicPublish(exchange: string.Empty,
-                routingKey: responseType.Name,
+            outputChannel.BasicPublish(
+                exchange: string.Empty,
+                routingKey: queueOutputName,
                 basicProperties: basicProperties,
                 body: bytesResponse);
         };
 
-        _channel.BasicConsume(queue: requestType.Name,
+        _channel.BasicConsume(
+            queue: requestType.Name,
             autoAck: false,
             consumer: consumer);
     }

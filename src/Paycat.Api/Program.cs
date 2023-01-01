@@ -20,15 +20,17 @@ builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddMessenger(messengerBuilder => messengerBuilder
     .AddRabbitMq(rabbitMqBuilder =>
     {
-        var options = builder.Configuration.GetSection(nameof(RabbitMqOptions))
-            .Get<RabbitMqOptions>();
+        var options = builder.Configuration.GetSection(nameof(RabbitMqMessengerOptions))
+            .Get<RabbitMqMessengerOptions>();
+        options.HostName = Environment.GetEnvironmentVariable("HOSTNAME");
         rabbitMqBuilder.Options = options;
     }));
 builder.Services.AddReceiver(receiverBuilder => receiverBuilder
     .AddRabbitMq(rabbitMqBuilder =>
     {
-        var options = builder.Configuration.GetSection(nameof(RabbitMqOptions))
-            .Get<RabbitMqOptions>();
+        var options = builder.Configuration.GetSection(nameof(RabbitMqReceiverOptions))
+            .Get<RabbitMqReceiverOptions>();
+        options.HostName = Environment.GetEnvironmentVariable("HOSTNAME");
         rabbitMqBuilder.Options = options;
     }));
 builder.Services.AddHostedService<Worker>();

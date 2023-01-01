@@ -30,12 +30,13 @@ namespace Paycat.Api.Controllers
             var processedTransaction = await _mediator.Send(createdTransaction)
                 .ConfigureAwait(false);
 
-            if (processedTransaction.IsError)
+            if (processedTransaction.Value is not null 
+                || processedTransaction.IsError)
             {
                 return BadRequest(processedTransaction.ErrorMessage);
             }
 
-            return Ok(processedTransaction);
+            return Ok(processedTransaction.Value);
         }
     }
 }

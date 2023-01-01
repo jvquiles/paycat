@@ -9,12 +9,12 @@ namespace Paycat.Infrastructure.RabbitMQ;
 internal class RabbitMqMessenger : IMessenger
 {
     private readonly IResultStorage _resultStorage;
-    private readonly RabbitMqOptions _rabbitMqOptions;
+    private readonly RabbitMqMessengerOptions _rabbitMqMessengerOptions;
 
-    public RabbitMqMessenger(IResultStorage resultStorage, RabbitMqOptions rabbitMqOptions)
+    public RabbitMqMessenger(IResultStorage resultStorage, RabbitMqMessengerOptions rabbitMqMessengerOptions)
     {
         _resultStorage = resultStorage;
-        _rabbitMqOptions = rabbitMqOptions;
+        _rabbitMqMessengerOptions = rabbitMqMessengerOptions;
     }
 
     public async Task<TResponse> SendAsync<TRequest, TResponse>(TRequest request, TimeSpan timeout)
@@ -39,7 +39,7 @@ internal class RabbitMqMessenger : IMessenger
 
         if (bytesRequest is null)
         {
-            return default;
+            return Activator.CreateInstance<TResponse>();
         }
 
         var messageResponse = Encoding.UTF8.GetString(bytesRequest);
@@ -47,7 +47,7 @@ internal class RabbitMqMessenger : IMessenger
 
         if (response is null)
         {
-            return default;
+            return Activator.CreateInstance<TResponse>();
         }
 
         return await Task.FromResult(response);
@@ -57,16 +57,17 @@ internal class RabbitMqMessenger : IMessenger
     {
         var factory = new ConnectionFactory()
         {
-            HostName = _rabbitMqOptions.Host,
-            Port = _rabbitMqOptions.Port,
-            UserName = _rabbitMqOptions.User,
-            Password = _rabbitMqOptions.Password,
+            HostName = _rabbitMqMessengerOptions.Host,
+            Port = _rabbitMqMessengerOptions.Port,
+            UserName = _rabbitMqMessengerOptions.User,
+            Password = _rabbitMqMessengerOptions.Password,
         };
 
         using var connection = factory.CreateConnection();
         using var channel = connection.CreateModel();
 
-        channel.QueueDeclare(queue: request.GetType().Name,
+        channel.QueueDeclare(
+            queue: request.GetType().Name,
             durable: false,
             exclusive: false,
             autoDelete: false,
@@ -75,10 +76,15 @@ internal class RabbitMqMessenger : IMessenger
         var bytesRequest = Encoding.UTF8.GetBytes(requestMessage);
 
         var basicProperties = channel.CreateBasicProperties();
-        basicProperties.CorrelationId = correlationId.ToString();
+        basicProperties.Headers = new Dictionary<string, object>
+        {
+            { "HOSTNAME", _rabbitMqMessengerOptions.HostName }
+        };
+        basicProperties.CorrelationId = correlationId;
         basicProperties.Persistent = false;
         basicProperties.Expiration = timeout.TotalMilliseconds.ToString(CultureInfo.InvariantCulture);
-        channel.BasicPublish(exchange: string.Empty,
+        channel.BasicPublish(
+            exchange: string.Empty,
             routingKey: request.GetType().Name,
             basicProperties: basicProperties,
             body: bytesRequest);

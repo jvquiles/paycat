@@ -10,8 +10,8 @@ var host = Host.CreateDefaultBuilder(args)
         services.AddListener(listenerBuilder => listenerBuilder
             .AddRabbitMq(rabbitMqBuilder =>
             {
-                var options = context.Configuration.GetSection(nameof(RabbitMqOptions))
-                    .Get<RabbitMqOptions>();
+                var options = context.Configuration.GetSection(nameof(RabbitMqListenerOptions))
+                    .Get<RabbitMqListenerOptions>();
                 rabbitMqBuilder.Options = options;
             }, Assembly.GetExecutingAssembly()));
         services.AddHostedService<Worker>();

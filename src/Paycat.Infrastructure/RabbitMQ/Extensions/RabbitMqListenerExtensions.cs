@@ -9,7 +9,7 @@ public static class RabbitMqListenerExtensions
 {
     public class RabbitMqListenerBuilder
     {
-        public RabbitMqOptions Options { get; set; }
+        public RabbitMqListenerOptions Options { get; set; }
     }
 
     public static ListenerBuilder AddRabbitMq(this ListenerBuilder listenerBuilder, Action<RabbitMqListenerBuilder> configure, params Assembly[]? assemblies)
@@ -22,7 +22,7 @@ public static class RabbitMqListenerExtensions
             throw new ArgumentNullException(nameof(builder.Options));
         }
 
-        listenerBuilder.ServiceCollection.AddSingleton<RabbitMqOptions>(builder.Options);
+        listenerBuilder.ServiceCollection.AddSingleton<RabbitMqListenerOptions>(builder.Options);
         listenerBuilder.ListenerImplementationType = typeof(RabbitMqListener);
         listenerBuilder.ServiceCollection.AddMediatR(assemblies ?? new Assembly[] { Assembly.GetExecutingAssembly() });
 

@@ -1,27 +1,28 @@
-﻿using System.Reflection;
-using Autofac;
+﻿using Autofac;
 using MediatR;
-using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System.Reflection;
 
 namespace Paycat.Infrastructure.RabbitMQ;
 
 public class RabbitMqReceiver : IReceiver
 {
     private readonly IResultStorage _resultStorage;
+    private readonly RabbitMqReceiverOptions _rabbitMqReceiverOptions;
     private readonly IModel _channel;
 
-    public RabbitMqReceiver(IResultStorage resultStorage, RabbitMqOptions rabbitMqOptions)
+    public RabbitMqReceiver(IResultStorage resultStorage, RabbitMqReceiverOptions rabbitMqReceiverOptions)
     {
         var factory = new ConnectionFactory()
         {
-            HostName = rabbitMqOptions?.Host ?? "localhost",
-            Port = rabbitMqOptions?.Port ?? 5672,
-            UserName = rabbitMqOptions?.User ?? "guest",
-            Password = rabbitMqOptions?.Password ?? "guest",
+            HostName = rabbitMqReceiverOptions?.Host ?? "localhost",
+            Port = rabbitMqReceiverOptions?.Port ?? 5672,
+            UserName = rabbitMqReceiverOptions?.User ?? "guest",
+            Password = rabbitMqReceiverOptions?.Password ?? "guest",
         };
         _resultStorage = resultStorage;
+        _rabbitMqReceiverOptions = rabbitMqReceiverOptions;
         var connection = factory.CreateConnection();
         _channel = connection.CreateModel();
     }
@@ -45,7 +46,9 @@ public class RabbitMqReceiver : IReceiver
 
         foreach (var responseType in requestHandlerResponseTypes)
         {
-            _channel.QueueDeclare(queue: responseType.Name,
+            var responseQueueName = $"{responseType.Name}_{_rabbitMqReceiverOptions.HostName}";
+            _channel.QueueDeclare(
+                queue: responseQueueName,
                 durable: false,
                 exclusive: false,
                 autoDelete: false,
@@ -61,7 +64,8 @@ public class RabbitMqReceiver : IReceiver
                 }
             };
 
-            _channel.BasicConsume(queue: responseType.Name,
+            _channel.BasicConsume(
+                queue: responseQueueName,
                 autoAck: false,
                 consumer: consumer);
         }

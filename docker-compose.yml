@@ -7,7 +7,22 @@ services:
       context: .
       dockerfile: src/Paycat.Api/Dockerfile
     environment:
-      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_URLS=http://+:80;https://+:443
+    ports:
+      - 6000:80
+      - 6001:443
+    networks:
+      - back
+    depends_on:
+      - rabbitmq
+
+  paycat.backup.api:
+    image: ${DOCKER_REGISTRY-}paycatapi
+    build:
+      context: .
+      dockerfile: src/Paycat.Api/Dockerfile
+    environment:
+      - ASPNETCORE_URLS=http://+:80;https://+:443
     ports:
       - 5000:80
       - 5001:443

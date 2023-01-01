@@ -37,7 +37,7 @@ internal class TransactionService : IRequestHandler<CreatedTransaction, Result<P
         var processedTransaction = await _messenger.SendAsync<CreatedTransaction, Result<ProcessedTransaction>>(request, TimeSpan.FromSeconds(30))
             .ConfigureAwait(false);
 
-        if (processedTransaction is not null && !processedTransaction.IsError)
+        if (processedTransaction?.Value is not null && !processedTransaction.IsError)
         {
             transaction.Status = processedTransaction.Value.Status;
             transaction.Date = processedTransaction.Value.Date;

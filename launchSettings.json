@@ -5,6 +5,7 @@
       "commandVersion": "1.0",
       "serviceActions": {
         "paycat.api": "StartDebugging",
+        "paycat.backup.api": "StartDebugging",
         "paycat.processor": "StartDebugging",
         "rabbitmq": "StartWithoutDebugging",
         "redis": "StartWithoutDebugging"
