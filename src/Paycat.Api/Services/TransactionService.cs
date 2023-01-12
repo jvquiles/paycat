@@ -34,7 +34,7 @@ internal class TransactionService : IRequestHandler<CreatedTransaction, Result<P
         };
         await _transactionRepository.AddOrUpdate(transaction.Id, transaction);
 
-        var processedTransaction = await _messenger.SendAsync<CreatedTransaction, Result<ProcessedTransaction>>(request, TimeSpan.FromSeconds(30))
+        var processedTransaction = await _messenger.SendAsync<CreatedTransaction, Result<ProcessedTransaction>>(request, TimeSpan.FromSeconds(1))
             .ConfigureAwait(false);
 
         if (processedTransaction?.Value is not null && !processedTransaction.IsError)

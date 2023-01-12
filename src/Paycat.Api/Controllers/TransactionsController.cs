@@ -25,15 +25,20 @@ namespace Paycat.Api.Controllers
         {
             var createdTransaction = new CreatedTransaction()
             {
-                Id = createTransaction.Id
+                Id = createTransaction.Id,
+                Amount = createTransaction.Amount
             };
             var processedTransaction = await _mediator.Send(createdTransaction)
                 .ConfigureAwait(false);
 
-            if (processedTransaction.Value is not null 
-                || processedTransaction.IsError)
+            if (processedTransaction.IsError)
             {
                 return BadRequest(processedTransaction.ErrorMessage);
+            }
+
+            if (processedTransaction.Value is null)
+            {
+                return NoContent();
             }
 
             return Ok(processedTransaction.Value);
